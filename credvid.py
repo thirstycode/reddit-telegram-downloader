@@ -24,15 +24,15 @@ args = parser.parse_args()
 
 # Link arguments with Redvid
 reddit = Downloader()
-
+print(args)
 reddit.url = args.url
-reddit.path = args.path
-reddit.overwrite = args.overwrite
-reddit.max_q = args.maxquality
-reddit.min_q = args.minquality
-reddit.max_d = args.maxduration
-reddit.max_s = args.maxsize
-reddit.auto_max = args.automax
-reddit.proxies = args.proxies
+reddit.path = ''
+reddit.overwrite = False
+reddit.max_q = True
+reddit.min_q = True
+reddit.max_d = 1e1000
+reddit.max_s = 1e1000
+reddit.auto_max = False
+reddit.proxies = {}
 
 reddit.download()

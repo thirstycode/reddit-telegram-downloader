@@ -1,6 +1,8 @@
 import logging
 from tele_config import token
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from redvid import Downloader
+import argparse
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -23,7 +25,23 @@ def help(bot, update):
 
 def echo(bot, update):
     """Echo the user message."""
-    bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
+    try:
+        link = update.message.text
+        reddit = Downloader()
+        reddit.url = link
+        reddit.path = ''
+        reddit.overwrite = False
+        reddit.max_q = True
+        reddit.min_q = True
+        reddit.max_d = 1e1000
+        reddit.max_s = 1e1000
+        reddit.auto_max = False
+        reddit.proxies = {}
+        path = reddit.download()
+        # bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
+        bot.send_video(chat_id=update.message.chat_id, video=open(path, 'rb'), supports_streaming=True)
+    except:
+        bot.send_message(chat_id=update.message.chat_id, text="Failed")
 
 
 def error(bot, update):
